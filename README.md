@@ -1,6 +1,6 @@
 # Repo Check
 
-**[⬇ Download CTI Repo Check Setup v1_18_0.exe](https://dev.azure.com/CTI-AV/Skunkworks/_apis/git/repositories/Repo-Check/items?path=/dist/CTI%20Repo%20Check%20Setup%20v1_18_0.exe&versionDescriptor.version=main&versionDescriptor.versionType=branch&download=true&%24format=octetStream&api-version=7.1)**
+**[⬇ Download CTI Repo Check Setup v1_19_1.exe](https://dev.azure.com/CTI-AV/Skunkworks/_apis/git/repositories/Repo-Check/items?path=/dist/CTI%20Repo%20Check%20Setup%20v1_19_1.exe&versionDescriptor.version=main&versionDescriptor.versionType=branch&download=true&%24format=octetStream&api-version=7.1)**
 (run it once; it installs for all users, and a newer setup upgrades in place)
 
 The status of every git repository in one folder, at a glance: what needs a
@@ -69,11 +69,12 @@ nothing by itself.
 | Project | The Azure DevOps project (the GitHub owner; the GitLab group path, `group/subgroup`; the Bitbucket workspace, or a Bitbucket Server project key); for a repository with no remote, the folder it sits in |
 | Repo Name | The remote's repository name; for one with no remote, its folder |
 | Service Ticket | The service tickets (`ST` and nine digits) the README links to Yoda, the same two ways as a job: `[ST262300462](https://conferencetechinc.sharepoint.com/.../Service/ST262300462)`, or a bare SharePoint address with the ticket as one of its folders. Every one counts (tickets do not replace each other as jobs do): one shows its number, several show **Multiple (n)**. The right-click menu opens each: one ticket has its own item, several are listed alphabetically under **Service Tickets**. With no job, the SharePoint icon opens the one ticket's folder, or with several lists them to choose from. Export CSV gives them all, separated by semicolons. A ticket link that is not to Yoda does not count. A removed repository keeps them |
-| Branch | The branch checked out; **(detached at 1a2b3c4)** when none is. A removed repository keeps the last one seen this session. A grey **Default** badge follows the name when it is the remote's default branch, as in Azure DevOps' branch list: what the remote's HEAD names as last fetched, else `main`, else `master` (a HEAD naming a deleted branch is not trusted). Export CSV adds it as "Default Branch" |
-| Status | **Up to date**, **Push (n)**, **Pull (n)** or **Both** against the branch it tracks, as of the last fetch. Also: No upstream branch, Upstream branch gone, No remote, Detached HEAD, No commits yet, Untrusted, Error, and "- fetch failed" when the last fetch did not work (the count is then as of the fetch before). |
-| Uncommitted | Changed and new (untracked) files not yet committed |
+| Branch | The branch checked out; **(detached at 1a2b3c4)** when none is. A removed repository keeps the last one seen this session. The name is in the attention colour (as Pull and Push) when it is not the remote's default branch: what the remote's HEAD names as last fetched, else `main`, else `master` (a HEAD naming a deleted branch is not trusted); with no default known (no remote), it stays grey. Export CSV gives the default as "Default Branch" |
+| Status | **Up to date**, **Push (3 commits)**, **Pull (2 commits)** or **Both (push 3 commits, pull 2 commits)** against the branch it tracks, as of the last fetch. Files not yet committed (changed and new together) count as work to push: **Push (5 files)**, **Push (3 commits, 5 files)**, **Both (push 3 commits and 5 files, pull 2 commits)**. Also: No upstream branch, Upstream branch gone, No remote, Detached HEAD, No commits yet, each with **(n files)** when there are any, Untrusted, Error, and "- fetch failed" when the last fetch did not work (the count is then as of the fetch before). There is no Uncommitted column since 1.19.0: Status says the same |
 | Size on Disk | The space the repository's folder takes, `.git` included, counted as Explorer's *Size on disk* (junctions are not followed). Measured on the first check and on each fetch, otherwise at most every 10 minutes. Sorts largest first; Export CSV gives it in bytes. Blank for a removed repository |
 | Last Commit Date / User / Message | The newest commit on the remote branch this one tracks, and its subject line |
+
+Which repository a row is (Job Number, Service Ticket, Project, Repo Name) shows in the main text colour, CTI navy in light mode; the rest of the row is grey, so the names read first. Status keeps its colours. A removed repository's row is a lighter grey throughout.
 
 **Closing the window keeps Repo Check running in the system tray**, still
 checking. Click the tray icon (or open Repo Check again) to bring the window
@@ -313,7 +314,7 @@ python tests\repo_status_test.py
 
 This builds a scratch folder of real repositories with a bare remote on disk
 (no network), runs the real exe on it with `--report`, and checks the CSV
-after each run: every status, the uncommitted counts, the remote branch's
+after each run: every status with its commit and file counts, the move of settings saved with the old Uncommitted column, the remote branch's
 last commit, Azure DevOps / visualstudio.com / ssh / GitHub / GitLab / Bitbucket addresses,
 nested and skipped folders, a failed fetch, that `--no-fetch` really does not
 fetch, and that **nothing a person works on changes** (HEAD, branch, working
